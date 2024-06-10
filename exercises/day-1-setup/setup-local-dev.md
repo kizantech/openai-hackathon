@@ -35,3 +35,19 @@ Refer to Postman's documentation on [OAuth 2.0](https://learning.postman.com/doc
 Click Get New Access Token to open the auth flow in your machine's default web browser. After authentication, it should redirect back to the Postman application and a new token will be created with the name you provided earlier for "Token Name." Select "Use Token" in the top-right corner of the popup to copy it into your current token. If the token expires and your requests start failing authorization (probably a 401 or 403 error), you can revisit this tab and get a new access token.
 
 Occasionally, you may want to visit Current Token > Access Token > Manage Tokens > Delete > Expired tokens, otherwise you'll be inundated with nearly-identical tokens.
+
+# Exercises
+
+1. Update your System Prompt to get OpenAI to respond with a funny accent. Try getting it to talk like a pirate, or use a bunch of emoji like a teenager texting.
+2. Take the response from the AI, add it to your request, and then ask a follow up question.
+3. Use the [OpenAPI reference](https://platform.openai.com/docs/api-reference/chat) docs to insert an image into your chat request, and ask OpenAI to describe the image.
+4. Set the `max_tokens` in the API and see how that changes the AI behavior
+5. Provide context to the AI by injecting a message into the message stack. See how it influences the AI's behavior. Try using JSON or other data from an open api, and see if you can get the AI to respond about the data contained.
+   1. Example, ask OpenAI, `When is the next MCU Film?`
+   2. Add a `user` message to your message collection with the response data from: https://www.whenisthenextmcufilm.com/api
+   3. Send the same question to OpenAI and see how the response changes
+6. Add `temperature` (between 0 and 2), `top_p` (between 0 and 1), `frequency_penalty` and `presence_penalty` (between -2 and 2) to the call, change the values, see how they affect the response of the AI.
+7. Try and get the AI to answer a difficult Logic Puzzle, for exmaple:
+   1. `There are three on/off switches on the ground floor of a building. Only one operates a single lightbulb on the third floor. The other two switches are not connected to anything. Put the switches in any on/off order you like. Then go to the third floor to check the bulb. Without leaving the third floor, can you figure out which switch is genuine? You get only one try.`
+   2. `Jack has 3 sisters, each of Jack's sisters has two brothers, how many brothers does Jack have?`
+   3. Change the `temperature` value and see how it affects your results. If you can, try older models like GPT-3.5 and see how it differs as well.
