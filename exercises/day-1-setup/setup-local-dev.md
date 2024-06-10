@@ -51,3 +51,104 @@ Occasionally, you may want to visit Current Token > Access Token > Manage Tokens
    1. `There are three on/off switches on the ground floor of a building. Only one operates a single lightbulb on the third floor. The other two switches are not connected to anything. Put the switches in any on/off order you like. Then go to the third floor to check the bulb. Without leaving the third floor, can you figure out which switch is genuine? You get only one try.`
    2. `Jack has 3 sisters, each of Jack's sisters has two brothers, how many brothers does Jack have?`
    3. Change the `temperature` value and see how it affects your results. If you can, try older models like GPT-3.5 and see how it differs as well.
+
+# Creating your first Azure OpenAI Chatbot
+* Launch your preferred terminal window
+* Navigate to where you want to store your code
+* Create a directory for your project and change to it
+* Type `dotnet new console`
+* Open your new project in VS 2019+ or VS Code
+* Add the `Azure.AI.OpenAI` 1.0.0-beta.13 nuget package to the csproj
+* Add the `Microsoft.Extensions.Configuration` and `Microsoft.Extensions.Configuration.UserSecrets` version 8.0.0 nuget package to the csproj
+
+In your Program CS, we need to add some imports.
+```csharp
+
+using Azure;
+using Azure.AI.OpenAI;
+using Microsoft.Extensions.Configuration;
+```
+
+Then after that, we need to setup the OpenAI Instance we are going to use. First, let's add the code:
+```csharp
+// == Retrieve the local secrets saved during the Azure deployment ==========
+var config = new ConfigurationBuilder().AddUserSecrets<Program>().Build();
+string openAIEndpoint = config["AZURE_OPENAI_ENDPOINT"];
+string openAIDeploymentName = config["AZURE_OPENAI_GPT_NAME"];
+string openAiKey = config["AZURE_OPENAI_KEY"];
+// == If you skipped the deployment because you already have an Azure OpenAI available,
+// == edit the previous lines to use hardcoded values.
+// == ex: string openAIEndpoint = "https://cog-demo123.openai.azure.com/";
+```
+
+Now, in the project, navigate to your user secrets in VS, and edit your config. Add the 3 keys above to the empty JSON file, and set them to the values you should have for your OpenAI environment.
+
+Next up, we're going to configure our OpenAI Client
+```csharp
+// == Creating the AIClient ==========
+var endpoint = new Uri(openAIEndpoint);
+var credentials = new AzureKeyCredential(openAiKey);
+var openAIClient = new OpenAIClient(endpoint, credentials);
+
+var completionOptions = new ChatCompletionsOptions
+{
+    MaxTokens = 1000,
+    Temperature = 1f,
+    FrequencyPenalty = 0.0f,
+    PresencePenalty = 0.0f,
+    NucleusSamplingFactor = 0.95f, // Top P
+    DeploymentName = openAIDeploymentName
+};
+```
+
+Here we're creating an endpoint, and AzureKeyCredentials to communicate with the OpenAIClient SDK. Then we configure our ChatCompletionOptions with the values we want for the AI controls.
+
+Now we're going to load some data from a markdown file, and setup the system prompt to include it for grounding the AI:
+```csharp
+//== Read markdown file  ==========
+string markdown = System.IO.File.ReadAllText("hikes.md");
+// == Providing context for the AI model ==========
+var systemPrompt =
+"""
+You are upbeat and friendly. You introduce yourself when first saying hello. 
+Provide a short answer only based on the user hiking records below:  
+
+""" + markdown;
+completionOptions.Messages.Add(new ChatRequestSystemMessage(systemPrompt));
+
+Console.WriteLine($"\n\n\t\t-=-=- Hiking History -=-=--\n{markdown}");
+```
+
+Now finally we can greet our user and start creating turns between the user and AI and having our conversation!
+```csharp
+// == Starting the conversation ==========
+string userGreeting = """
+Hi!
+""";
+
+completionOptions.Messages.Add(new ChatRequestUserMessage(userGreeting));
+Console.WriteLine($"\n\nUser >>> {userGreeting}");
+
+ChatCompletions response = await openAIClient.GetChatCompletionsAsync(completionOptions);
+ChatResponseMessage assistantResponse = response.Choices[0].Message;
+Console.WriteLine($"\n\nAssistant >>> {assistantResponse.Content}");
+completionOptions.Messages.Add(new ChatRequestAssistantMessage(assistantResponse.Content));
+
+
+// == Providing the user's request ==========
+var hikeRequest =
+"""
+I would like to know the ration of hike I did in Canada compare to hikes done in other countries.
+""";
+
+
+Console.WriteLine($"\n\nUser >>> {hikeRequest}");
+completionOptions.Messages.Add(new ChatRequestUserMessage(hikeRequest));
+
+// == Retrieve the answer from HikeAI ==========
+response = await openAIClient.GetChatCompletionsAsync(completionOptions);
+assistantResponse = response.Choices[0].Message;
+
+Console.WriteLine($"\n\nAssistant >>> {assistantResponse.Content}");
+```
+Compile and run your code, and have fun!
