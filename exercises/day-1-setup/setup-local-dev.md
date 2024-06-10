@@ -152,3 +152,6 @@ assistantResponse = response.Choices[0].Message;
 Console.WriteLine($"\n\nAssistant >>> {assistantResponse.Content}");
 ```
 Compile and run your code, and have fun!
+
+### *CHALLENGE*:
+> Try and see if you can add interactive console session for users to talk to the chat bot, and add the response message to the console, and context.
