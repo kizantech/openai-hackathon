@@ -1,0 +1,271 @@
+{
+	"info": {
+		"_postman_id": "7b7c5b8d-22fa-491c-832c-8f54fbf8324f",
+		"name": "Azure OpenAI Service API",
+		"description": "Azure OpenAI APIs for completions and search",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11076036",
+		"_collection_link": "https://www.postman.com/interstellar-station-64891/workspace/azure-openai-workspace/collection/11076036-7b7c5b8d-22fa-491c-832c-8f54fbf8324f?action=share&source=collection_link&creator=11076036"
+	},
+	"item": [
+		{
+			"name": "deployments",
+			"item": [
+				{
+					"name": "{deployment-id}",
+					"item": [
+						{
+							"name": "chat",
+							"item": [
+								{
+									"name": "completions",
+									"item": [
+										{
+											"name": "Creates a completion for the chat message",
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {}
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"messages\": [\n        {\n            \"role\": \"system\",\n            \"content\": \"You are a car mechanic who loves to help people with their car problems\"\n        },\n        {\n            \"role\": \"user\",\n            \"content\": \"what is the role of a radiator in the car\"\n        },\n        {\n            \"role\": \"assistant\",\n            \"content\": \"The radiator is an essential component of a car's cooling system. Its function is to dissipate heat from the engine coolant by transferring heat from the coolant to the surrounding air, thus preventing the engine from overheating. \\n\\nThe radiator consists of a series of tubes through which the coolant flows, and is surrounded by thin fins which help to increase the surface area for efficient heat transfer. As the hot coolant passes through the tubes, the fins help to dissipate the heat and cool the liquid down before it is pumped back into the engine.\\n\\nWithout a properly functioning radiator, the engine would quickly overheat and cause serious damage to its internal components. Therefore, it's important to keep up with regular maintenance, such as coolant flushes and radiator cleanings, to ensure the proper functioning of the radiator.\"\n        },\n        {\n            \"role\": \"user\",\n            \"content\": \"what is the average cost\"\n        }\n    ]\n}\n",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://{{endpoint}}/openai/deployments/{{deployment_id}}/chat/completions?api-version=2024-02-15-preview",
+													"protocol": "https",
+													"host": [
+														"{{endpoint}}"
+													],
+													"path": [
+														"openai",
+														"deployments",
+														"{{deployment_id}}",
+														"chat",
+														"completions"
+													],
+													"query": [
+														{
+															"key": "api-version",
+															"value": "2024-02-15-preview"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "OK",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"value": "<token>",
+																"description": "Added as a part of security scheme: oauth2"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"messages\": [\n    {\n      \"role\": \"assistant\",\n      \"content\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ],\n  \"temperature\": 1,\n  \"top_p\": 1,\n  \"n\": 1,\n  \"stream\": false,\n  \"stop\": \"<string>\",\n  \"max_tokens\": 4096,\n  \"presence_penalty\": 0,\n  \"frequency_penalty\": 0,\n  \"logit_bias\": {},\n  \"user\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "https://.openai.azure.com/openai/deployments/:deployment-id/chat/completions?api-version=<string>",
+															"protocol": "https",
+															"host": [
+																"",
+																"openai",
+																"azure",
+																"com"
+															],
+															"path": [
+																"openai",
+																"deployments",
+																":deployment-id",
+																"chat",
+																"completions"
+															],
+															"query": [
+																{
+																	"key": "api-version",
+																	"value": "<string>",
+																	"description": "(Required) "
+																}
+															],
+															"variable": [
+																{
+																	"key": "deployment-id"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														},
+														{
+															"key": "apim-request-id",
+															"value": "<string>",
+															"description": {
+																"content": "Request ID for troubleshooting purposes",
+																"type": "text/plain"
+															}
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"id\": \"<string>\",\n  \"object\": \"<string>\",\n  \"created\": \"<integer>\",\n  \"model\": \"<string>\",\n  \"choices\": [\n    {\n      \"index\": \"<integer>\",\n      \"message\": {\n        \"role\": \"assistant\",\n        \"content\": \"<string>\"\n      },\n      \"finish_reason\": \"<string>\",\n      \"content_filter_results\": {\n        \"sexual\": {\n          \"severity\": \"low\",\n          \"filtered\": \"<boolean>\"\n        },\n        \"violence\": {\n          \"severity\": \"safe\",\n          \"filtered\": \"<boolean>\"\n        },\n        \"hate\": {\n          \"severity\": \"low\",\n          \"filtered\": \"<boolean>\"\n        },\n        \"self_harm\": {\n          \"severity\": \"low\",\n          \"filtered\": \"<boolean>\"\n        },\n        \"error\": {\n          \"code\": \"<string>\",\n          \"message\": \"<string>\"\n        }\n      }\n    },\n    {\n      \"index\": \"<integer>\",\n      \"message\": {\n        \"role\": \"system\",\n        \"content\": \"<string>\"\n      },\n      \"finish_reason\": \"<string>\",\n      \"content_filter_results\": {\n        \"sexual\": {\n          \"severity\": \"medium\",\n          \"filtered\": \"<boolean>\"\n        },\n        \"violence\": {\n          \"severity\": \"safe\",\n          \"filtered\": \"<boolean>\"\n        },\n        \"hate\": {\n          \"severity\": \"safe\",\n          \"filtered\": \"<boolean>\"\n        },\n        \"self_harm\": {\n          \"severity\": \"safe\",\n          \"filtered\": \"<boolean>\"\n        },\n        \"error\": {\n          \"code\": \"<string>\",\n          \"message\": \"<string>\"\n        }\n      }\n    }\n  ],\n  \"prompt_filter_results\": [\n    {\n      \"prompt_index\": \"<integer>\",\n      \"content_filter_results\": {\n        \"sexual\": {\n          \"severity\": \"safe\",\n          \"filtered\": \"<boolean>\"\n        },\n        \"violence\": {\n          \"severity\": \"high\",\n          \"filtered\": \"<boolean>\"\n        },\n        \"hate\": {\n          \"severity\": \"safe\",\n          \"filtered\": \"<boolean>\"\n        },\n        \"self_harm\": {\n          \"severity\": \"medium\",\n          \"filtered\": \"<boolean>\"\n        },\n        \"error\": {\n          \"code\": \"<string>\",\n          \"message\": \"<string>\"\n        }\n      }\n    },\n    {\n      \"prompt_index\": \"<integer>\",\n      \"content_filter_results\": {\n        \"sexual\": {\n          \"severity\": \"low\",\n          \"filtered\": \"<boolean>\"\n        },\n        \"violence\": {\n          \"severity\": \"high\",\n          \"filtered\": \"<boolean>\"\n        },\n        \"hate\": {\n          \"severity\": \"high\",\n          \"filtered\": \"<boolean>\"\n        },\n        \"self_harm\": {\n          \"severity\": \"high\",\n          \"filtered\": \"<boolean>\"\n        },\n        \"error\": {\n          \"code\": \"<string>\",\n          \"message\": \"<string>\"\n        }\n      }\n    }\n  ],\n  \"usage\": {\n    \"prompt_tokens\": \"<integer>\",\n    \"completion_tokens\": \"<integer>\",\n    \"total_tokens\": \"<integer>\"\n  }\n}"
+												},
+												{
+													"name": "Service unavailable",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"value": "<token>",
+																"description": "Added as a part of security scheme: oauth2"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"messages\": [\n    {\n      \"role\": \"assistant\",\n      \"content\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ],\n  \"temperature\": 1,\n  \"top_p\": 1,\n  \"n\": 1,\n  \"stream\": false,\n  \"stop\": \"<string>\",\n  \"max_tokens\": 4096,\n  \"presence_penalty\": 0,\n  \"frequency_penalty\": 0,\n  \"logit_bias\": {},\n  \"user\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/deployments/:deployment-id/chat/completions?api-version=<string>",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"deployments",
+																":deployment-id",
+																"chat",
+																"completions"
+															],
+															"query": [
+																{
+																	"key": "api-version",
+																	"value": "<string>",
+																	"description": "(Required) "
+																}
+															],
+															"variable": [
+																{
+																	"key": "deployment-id"
+																}
+															]
+														}
+													},
+													"status": "Internal Server Error",
+													"code": 500,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														},
+														{
+															"key": "apim-request-id",
+															"value": "<string>",
+															"description": {
+																"content": "Request ID for troubleshooting purposes",
+																"type": "text/plain"
+															}
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"error\": {\n    \"code\": \"<string>\",\n    \"message\": \"<string>\",\n    \"param\": \"irure labore sit consequat enim\",\n    \"type\": \"elit Lorem v\",\n    \"inner_error\": {}\n  }\n}"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{api_key}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "api-key",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
