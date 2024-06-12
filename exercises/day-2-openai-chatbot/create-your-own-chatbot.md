@@ -20,7 +20,22 @@ In this exercise, you will extend your existing .NET 8 console application to im
 
 ### Step 2: Implement the Chatbot
 
-1. **Open `Program.cs` and replace lines 29 to the end with:**
+1. **Open `Program.cs` and Change the `ChatCompletionOptions`:**
+
+```charp
+var completionOptions = new ChatCompletionsOptions
+{
+    Messages = { new ChatRequestSystemMessage("You are a helpful assistant. Answer the user's questions to the best of your abilities.") },
+    MaxTokens = 1000,
+    Temperature = 1f,
+    FrequencyPenalty = 0.0f,
+    PresencePenalty = 0.0f,
+    NucleusSamplingFactor = 0.95f, // Top P
+    DeploymentName = openAIDeploymentName
+};
+```
+
+2. **replace lines 29 to the end with:**
 
    ```csharp    
     Console.WriteLine("Azure OpenAI Chatbot is running. Type 'exit' to end the chat.");
@@ -33,10 +48,10 @@ In this exercise, you will extend your existing .NET 8 console application to im
             continue;
         if (userInput.Equals("exit", StringComparison.OrdinalIgnoreCase))
             break;
-
+        completionOptions.Messages.Add(new ChatRequestUserMessage(userInput));
         var completionsResponse = await openAIClient.GetChatCompletionsAsync(completionOptions);
         var responseText = completionsResponse.Value.Choices[0].Message;
-
+        completionOptions.Messages.Add(new ChatRequestAssistantMessage(responseText));
         Console.WriteLine($"Bot: {responseText}");
     }
    ```
