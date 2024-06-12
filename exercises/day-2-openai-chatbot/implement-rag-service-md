@@ -15,17 +15,18 @@ In this exercise, you will extend your existing .NET 8 console application to im
 
 Use the following function to ask the AI to determine if the user's question is related to the game, and if so, return a search query.
 ```csharp
-static async Task<string> GetMtgQueryIfRelated(OpenAIClient client, string question)
+static async Task<string> GetMtgQueryIfRelated(OpenAIClient client, string question, string deploymentName)
 {
-    var completionOptions = new CompletionsOptions
+    var completionOptions = new ChatCompletionsOptions
     {
-        Prompts = { $"Is the following question related to Magic: The Gathering? If it is, return a search query to find the card the user is looking for, if it is not, return NO.\n\n{question}" },
-        MaxTokens = 5,
-        Temperature = 0.0f
+        Messages = { new ChatRequestSystemMessage($"Is the following question related to Magic: The Gathering? If it is, return a search query to find the card the user is looking for, if it is not, return NO.\n\n{question}") },
+        MaxTokens = 15,
+        Temperature = 0.0f,
+        DeploymentName = deploymentName
     };
-
-    var completionsResponse = await client.GetCompletionsAsync(completionOptions);
-    var responseText = completionsResponse.Value.Choices[0].Text.Trim().ToLower();
+    
+    var completionsResponse = await client.GetChatCompletionsAsync(completionOptions);
+    var responseText = completionsResponse.Value.Choices[0].Message.Content.Trim().ToLower();
 
     return responseText.ToUpper() == "NO" ? string.Empty : responseText;
 }
