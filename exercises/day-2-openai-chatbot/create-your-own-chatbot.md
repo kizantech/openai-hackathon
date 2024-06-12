@@ -51,8 +51,8 @@ var completionOptions = new ChatCompletionsOptions
         completionOptions.Messages.Add(new ChatRequestUserMessage(userInput));
         var completionsResponse = await openAIClient.GetChatCompletionsAsync(completionOptions);
         var responseText = completionsResponse.Value.Choices[0].Message;
-        completionOptions.Messages.Add(new ChatRequestAssistantMessage(responseText));
-        Console.WriteLine($"Bot: {responseText}");
+        completionOptions.Messages.Add(new ChatRequestAssistantMessage(responseText.Content));
+        Console.WriteLine($"Bot: {responseText.Content}");
     }
    ```
 
