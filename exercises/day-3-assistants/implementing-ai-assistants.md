@@ -162,25 +162,22 @@ do
 #### Listing Messages and Showing Results
 
 ```csharp
-// List messages and show results
+// Write out the last message in the thread.
 var afterRunMessagesResponse = await aiAssistantsClient.GetMessagesAsync(thread.Id);
-var messages = afterRunMessagesResponse.Value;
+var messages = afterRunMessagesResponse.Value.Where(m => m.Role == MessageRole.Assistant).First();
 
-foreach (var threadMessage in messages)
+Console.Write($"{messages.CreatedAt:yyyy-MM-dd HH:mm:ss} - {messages.Role,10}: ");
+foreach (var contentItem in messages.ContentItems)
 {
-    Console.Write($"{threadMessage.CreatedAt:yyyy-MM-dd HH:mm:ss} - {threadMessage.Role,10}: ");
-    foreach (var contentItem in threadMessage.ContentItems)
+    if (contentItem is MessageTextContent textItem)
     {
-        if (contentItem is MessageTextContent textItem)
-        {
-            Console.Write(textItem.Text);
-        }
-        else if (contentItem is MessageImageFileContent imageFileContent)
-        {
-            Console.Write($"<image from ID: {imageFileContent.FileId}");
-        }
-        Console.WriteLine();
+        Console.Write(textItem.Text);
     }
+    else if (contentItem is MessageImageFileContent imageFileContent)
+    {
+        Console.Write($"<image from ID: {imageFileContent.FileId}");
+    }
+    Console.WriteLine();
 }
 ```
 **Explanation:**
@@ -245,23 +242,20 @@ while (true)
 
     // List messages and show results
     var afterRunMessagesResponse = await aiAssistantsClient.GetMessagesAsync(thread.Id);
-    var messages = afterRunMessagesResponse.Value;
+    var messages = afterRunMessagesResponse.Value.Where(m => m.Role == MessageRole.Assistant).First();
 
-    foreach (var threadMessage in messages)
+    Console.Write($"{messages.CreatedAt:yyyy-MM-dd HH:mm:ss} - {messages.Role,10}: ");
+    foreach (var contentItem in messages.ContentItems)
     {
-        Console.Write($"{threadMessage.CreatedAt:yyyy-MM-dd HH:mm:ss} - {threadMessage.Role,10}: ");
-        foreach (var contentItem in threadMessage.ContentItems)
+        if (contentItem is MessageTextContent textItem)
         {
-            if (contentItem is MessageTextContent textItem)
-            {
-                Console.Write(textItem.Text);
-            }
-            else if (contentItem is MessageImageFileContent imageFileContent)
-            {
-                Console.Write($"<image from ID: {imageFileContent.FileId}");
-            }
-            Console.WriteLine();
+            Console.Write(textItem.Text);
         }
+        else if (contentItem is MessageImageFileContent imageFileContent)
+        {
+            Console.Write($"<image from ID: {imageFileContent.FileId}");
+        }
+        Console.WriteLine();
     }
 }
 ```
