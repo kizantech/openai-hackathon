@@ -63,7 +63,7 @@ need to add our FunctionToolDefinition.**
    ```csharp
    // Create the AI Assistant
     var assistantResponse = await aiAssistantsClient.CreateAssistantAsync(
-        new AssistantCreationOptions("gpt-4o")
+        new AssistantCreationOptions(openAIDeploymentName)
         {
             Name = "MTG Card Bot",
             Instructions = "You are a Magic: The Gathering card expert bot. Use the provided functions to search the database of Magic: The Gathering cards. And answer any questions the user has to the best of your abilities.",
